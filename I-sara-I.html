@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sara // Responsive Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            cursor: none !important; /* Completely hides the default mouse arrow everywhere */
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+        }
+
+        /* --- GLOBAL CUSTOM WHITE DOT CURSOR --- */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            display: block; /* Always forced to display */
+        }
+
+        /* Changes dot to accent red when hovering interactive areas */
+        body.hovering-link .cursor-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #ff3b30;
+        }
+
+        .viewport-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- SCREEN 1: HERO LANDING (Nothing Phone Style Layout) --- */
+        .hero-section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 40px;
+            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+            z-index: 2;
+        }
+
+        /* Nothing Phone Inspired Letter Buttons */
+        .sara-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .letter-btn {
+            font-family: 'VT323', monospace;
+            font-size: 5rem;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            border: 1px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            color: #ffffff;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .letter-btn:hover {
+            border-style: solid;
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Info Grid (About Sara, Dev, Contact) */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 950px;
+            width: 100%;
+            margin: 40px 0;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            transition: border 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .info-card h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-card h3::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #ff3b30; 
+            border-radius: 50%;
+        }
+
+        .info-card p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 300;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            margin-top: auto; 
+            padding-top: 15px;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s ease;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+            align-self: flex-start;
+        }
+
+        .github-link:hover {
+            opacity: 0.7;
+            border-bottom-style: solid;
+        }
+
+        .talk-btn {
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 30px;
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .talk-btn:hover {
+            background-color: #e5e5e5;
+            transform: scale(1.03);
+        }
+
+        /* --- SCREEN 2: WORKSPACE (Chat & Terminal Dashboard) --- */
+        .dashboard-section {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            padding: 30px 40px 40px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transform: translateY(-100%); 
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+            z-index: 1;
+        }
+
+        .dashboard-top-bar {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: inherit;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: color 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #ffffff;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 25px;
+            flex: 1;
+            min-height: 0; 
+        }
+
+        .panel {
+            background: #0a0a0a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .chat-messages::-webkit-scrollbar, .terminal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb, .terminal-body::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 14px 20px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.sara {
+            background: rgba(255, 255, 255, 0.05);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .message.user {
+            background: #ffffff;
+            color: #000000;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input-wrapper {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 24px;
+            border-radius: 24px;
+            color: #ffffff;
+            font-family: inherit;
+            outline: none;
+            font-size: 0.95rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .terminal-body {
+            flex: 1;
+            padding: 25px;
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .terminal-line {
+            line-height: 1.2;
+            word-break: break-all;
+        }
+
+        .terminal-input-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-prompt {
+            color: #ff3b30;
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            padding: 0;
+        }
+
+        /* --- ANIMATION TRANSITION STATES --- */
+        .active-state .hero-section {
+            transform: translateY(100vh); 
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .active-state .dashboard-section {
+            transform: translateY(0); 
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE CONFIGURATIONS (Mobile & iPad Layout Rules)
+           ========================================================================== */
+
+        /* Tablets & iPads (Portrait & Landscape Breakpoint) */
+        @media (max-width: 992px) {
+            .hero-section {
+                padding: 40px 30px;
+                overflow-y: auto; 
+            }
+
+            .info-grid {
+                gap: 15px;
+            }
+
+            .info-card {
+                padding: 20px;
+                border-radius: 24px;
+            }
+
+            .dashboard-section {
+                padding: 20px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1.4fr 1fr;
+                gap: 15px;
+            }
+        }
+
+        /* Mobile Phone Layout Grid System */
+        @media (max-width: 768px) {
+            .hero-section {
+                justify-content: flex-start;
+                gap: 35px;
+                padding: 40px 20px;
+            }
+
+            .sara-container {
+                margin-top: 10px;
+                gap: 10px;
+            }
+
+            .letter-btn {
+                width: 65px;
+                height: 65px;
+                font-size: 3.5rem;
+                border-radius: 18px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr; /* Stacks cards vertically */
+                gap: 12px;
+                margin: 10px 0;
+            }
+
+            .info-card {
+                padding: 20px;
+            }
+
+            .info-card p {
+                font-size: 0.9rem;
+            }
+
+            .talk-btn {
+                width: 100%;
+                max-width: 300px;
+                padding: 16px;
+                margin-top: auto;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr; /* Stacks panels vertically */
+                grid-template-rows: 1.3fr 1fr;
+                gap: 15px;
+            }
+
+            .panel {
+                border-radius: 22px;
+            }
+
+            .panel-header {
+                padding: 12px 20px;
+                font-size: 0.75rem;
+            }
+
+            .chat-messages, .terminal-body {
+                padding: 15px;
+            }
+
+            .message {
+                max-width: 85%;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .letter-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 2.8rem;
+                border-radius: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Seamless Custom Dot Cursor (Persists Globally) -->
+    <div class="cursor-dot"></div>
+
+    <div class="viewport-wrapper">
+
+        <!-- SCREEN 1: LANDING HERO -->
+        <section class="hero-section">
+            
+            <!-- Nothing Font Concept Letters -->
+            <div class="sara-container">
+                <div class="letter-btn">S</div>
+                <div class="letter-btn">A</div>
+                <div class="letter-btn">R</div>
+                <div class="letter-btn">A</div>
+            </div>
+
+            <!-- Context Info Widgets -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>About Sara</h3>
+                    <p>Sara is an advanced AI built for cybersecurity, software development, and technical problem-solving, helping users secure systems, write code, fix bugs, and solve complex digital challenges with speed and accuracy.</p>
+                </div>
+                <div class="info-card">
+                    <h3>About Developer</h3>
+                    <p>Designed by Ahmad, Developer and cybersecurity researcher specializing in secure systems, reverse engineering, and clean software engineering.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Contact</h3>
+                    <p>Questions, feedback, or collaboration? Feel free to get in touch through GitHub.</p>
+                    <a href="https://github.com/I-Jerry-II" target="_blank" class="github-link">GitHub // I-Jerry-II</a>
+                </div>
+            </div>
+
+            <button class="talk-btn" id="slide-trigger">𝑻𝒂𝒍𝒌 𝑾𝒊𝒕𝒉 𝑺𝒂𝒓𝒂</button>
+        </section>
+
+        <!-- SCREEN 2: MAIN DASHBOARD -->
+        <section class="dashboard-section">
+            
+            <!-- Dashboard Top Action Area -->
+            <div class="dashboard-top-bar">
+                <button class="back-btn" id="back-trigger">[ ← Return to menu ]</button>
+            </div>
+            
+            <!-- Workspace Area Layout Grid -->
+            <div class="dashboard-grid">
+                <!-- Large Interactive Chat Module -->
+                <div class="panel chat-panel">
+                    <div class="panel-header">Encrypted Chat Frame // Connected</div>
+                    <div class="chat-messages" id="chat-messages-container">
+                        <div class="message sara">Hello. The connection is stable. Feel free to type anything down below.</div>
+                    </div>
+                    <div class="chat-input-wrapper">
+                        <input type="text" class="chat-input" id="chat-input-field" placeholder="Write an archive entry...">
+                    </div>
+                </div>
+
+                <!-- Fully Functional Terminal Input Module -->
+                <div class="panel terminal-panel">
+                    <div class="panel-header">Kernel Diagnostic Terminal</div>
+                    <div class="terminal-body" id="terminal-body-container">
+                        <div class="terminal-line">// System: Type any command command line below.</div>
+                        
+                        <div class="terminal-input-row">
+                            <span class="terminal-prompt">sara@root:~#</span>
+                            <input type="text" class="terminal-input" id="terminal-input-field">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // --- Custom Dot Cursor Logic ---
+        const dot = document.querySelector('.cursor-dot');
+        let mouseX = 0, mouseY = 0;
+        let dotX = 0, dotY = 0;
+
+        // Dynamic coordinate tracker (works for mice and fires on touch dragging too)
+        function updateCoordinates(e) {
+            if (e.touches && e.touches.length > 0) {
+                mouseX = e.touches[0].clientX;
+                mouseY = e.touches[0].clientY;
+            } else {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            }
+        }
+
+        document.addEventListener('mousemove', updateCoordinates);
+        document.addEventListener('touchmove', updateCoordinates);
+        document.addEventListener('touchstart', updateCoordinates);
+
+        function animateCursor() {
+            const factor = 0.18; 
+            dotX += (mouseX - dotX) * factor;
+            dotY += (mouseY - dotY) * factor;
+            
+            dot.style.left = `${dotX}px`;
+            dot.style.top = `${dotY}px`;
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // --- Interactive State Link Listeners ---
+        function attachHoverEffects() {
+            const interactives = document.querySelectorAll('input, a, button, .letter-btn');
+            interactives.forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hovering-link'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-link'));
+            });
+        }
+        attachHoverEffects();
+
+        // --- Trigger Smooth Downward View Slide ---
+        const trigger = document.getElementById('slide-trigger');
+        trigger.addEventListener('click', () => {
+            document.body.classList.add('active-state');
+            if (window.innerWidth > 768) {
+                setTimeout(() => {
+                    document.getElementById('terminal-input-field').focus();
+                }, 600);
+            }
+        });
+
+        // --- Trigger Smooth Upward View Slide Back to Menu ---
+        const backTrigger = document.getElementById('back-trigger');
+        backTrigger.addEventListener('click', () => {
+            document.body.classList.remove('active-state');
+        });
+
+        // ==========================================================================
+        //  SARA AI CORE — cybersecurity / dev focused assistant
+        // ==========================================================================
+
+        // Point this at your local Ollama server. Default install = http://localhost:11434
+        const OLLAMA_URL = "http://localhost:11434/api/chat";
+        // Must match a model you've pulled, e.g. `ollama pull llama3.1`
+        const OLLAMA_MODEL = "llama3.1";
+
+        const SARA_SYSTEM_PROMPT = `You are Sara, an AI assistant embedded in a terminal/chat dashboard.
+You specialize in cybersecurity (defensive security, secure architecture, reverse engineering fundamentals, CTF-style problem solving, vulnerability analysis/explanation, threat modeling) and software development (writing, reviewing, debugging, and explaining code across languages).
+Personality: confident, sharp, a bit of a "bro" energy — casual, direct, no corporate fluff, occasional dry humor — but always technically precise and correct. Never sacrifice accuracy for tone.
+Keep answers focused and practical. Use code blocks for code. Don't pad responses with unnecessary disclaimers.`;
+
+        async function callSaraAI(userText, { terminalMode = false } = {}) {
+            const systemPrompt = terminalMode
+                ? SARA_SYSTEM_PROMPT + `\nYou are currently responding INSIDE A TERMINAL UI. Format your reply as plain terminal-style output — short lines, monospace-friendly, no markdown headers, code in plain text (no triple backticks). Keep it tight.`
+                : SARA_SYSTEM_PROMPT;
+
+            let response;
+            try {
+                response = await fetch(OLLAMA_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        model: OLLAMA_MODEL,
+                        stream: false,
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: userText }
+                        ]
+                    })
+                });
+            } catch (networkErr) {
+                throw new Error(`Can't reach Ollama at ${OLLAMA_URL}. Is it running? (ollama serve)`);
+            }
+
+            if (!response.ok) {
+                throw new Error(`Ollama error: ${response.status} — is model "${OLLAMA_MODEL}" pulled?`);
+            }
+
+            const data = await response.json();
+            return (data.message && data.message.content ? data.message.content : "").trim();
+        }
+
+        // --- Chat Interactivity ---
+        const chatInput = document.getElementById('chat-input-field');
+        const chatMessages = document.getElementById('chat-messages-container');
+
+        function appendChatMessage(text, who) {
+            const msg = document.createElement('div');
+            msg.className = `message ${who}`;
+            msg.textContent = text;
+            chatMessages.appendChild(msg);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return msg;
+        }
+
+        chatInput.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter' && chatInput.value.trim() !== '') {
+                const userText = chatInput.value;
+                appendChatMessage(userText, 'user');
+                chatInput.value = '';
+                chatInput.disabled = true;
+
+                const thinkingMsg = appendChatMessage('...', 'sara');
+
+                try {
+                    const reply = await callSaraAI(userText, { terminalMode: false });
+                    thinkingMsg.textContent = reply;
+                } catch (err) {
+                    thinkingMsg.textContent = `Connection error: ${err.message}`;
+                } finally {
+                    chatInput.disabled = false;
+                    chatInput.focus();
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }
+            }
+        });
+
+        // --- Terminal Interactivity ---
+        const termInput = document.getElementById('terminal-input-field');
+        const termBody = document.getElementById('terminal-body-container');
+        const termInputRow = termInput.parentElement;
+
+        function printTerminalLine(html) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = html;
+            termBody.insertBefore(line, termInputRow);
+            termBody.scrollTop = termBody.scrollHeight;
+            return line;
+        }
+
+        function printTerminalBlock(text) {
+            text.split('\n').forEach(l => printTerminalLine(l === '' ? '&nbsp;' : escapeHtml(l)));
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        const BANNER = `
+⠀⠀⢸⡿⢦⣄⠀⢀⣠⣴⣶⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠘⣷⠀⠉⠛⠛⠉⢰⡇⠀⠀⠘⣷⣦⣾⡇⠀⠀⠀⠀⠀⠀⠀
+⠀⢀⣰⠿⠀⠀⠀⠀⠀⢿⡁⠀⢀⣴⣿⣿⣿⣶⡄⠀⠀⠀⠀⠀⠀
+⣴⣿⣁⡀⠀⠀⠀⠀⠀⠀⠻⣦⡀⠀⠀⢿⠃⠀⢀⣤⡀⠀⠀⠀⠀
+⠀⠈⠉⠛⣿⡀⠀⣰⠟⠛⠛⠛⠛⠀⠀⠀⠀⣠⡾⢻⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⣷⣼⠏⠀⠀⠀⢻⣟⠻⠿⢶⡾⠋⠀⢸⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠘⠃⠀⣴⠀⠀⠈⢻⣆⠀⠀⠀⠀⠀⠀⠻⢶⣤⣀⠀
+⠀⠀⠀⠀⠀⠘⢷⣾⣿⣤⣄⠀⢈⣿⠀⠀⠀⠀⠀⠀⠀⢀⣉⣿⠿
+⠀⠀⠀⠀⠀⢀⣾⠿⣿⡏⠉⢠⣾⠃⠀⠀⠀⠀⠀⢀⣾⠛⠋⠁⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠙⠃⠀⣿⡷⠿⠟⠛⢿⣦⡀⢸⡇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⠙⢿⣿⠃⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀  ⠀⠉⠀⠀⠀⠀⠀                 
+
+  SARA // Cybersecurity & Dev Core`;
+
+        // ==========================================================================
+        //  OSINT TOOL REFERENCE LISTS
+        // ==========================================================================
+
+        const OSINT_USERNAME = `-- Username OSINT Tools --
+1.  Sherlock            https://github.com/sherlock-project/sherlock
+2.  WhatsMyName         https://whatsmyname.app/
+3.  Namechk             https://namechk.com/
+4.  KnowEm              https://knowem.com/
+5.  UserSearch          https://usersearch.org/
+6.  Maigret             https://github.com/soxoj/maigret
+7.  Social Searcher     https://www.social-searcher.com/
+8.  Instant Username Search  https://instantusername.com/
+9.  NameCheckup         https://namecheckup.com/
+10. Holehe              https://github.com/megadose/holehe
+11. Intelligence X      https://intelx.io/
+12. OSINT Framework     https://osintframework.com/`;
+
+        const OSINT_PHONE = `-- Phone OSINT Tools --
+1.  PhoneInfoga         https://github.com/sundowndev/phoneinfoga
+2.  NumVerify           https://numverify.com/
+3.  Truecaller          https://www.truecaller.com/
+4.  Sync.me             https://sync.me/
+5.  OpenCNAM            https://www.opencnam.com/
+6.  Twilio Lookup       https://www.twilio.com/lookup
+7.  ThatsThem           https://thatsthem.com/reverse-phone-lookup
+8.  SpyDialer           https://www.spydialer.com/
+9.  Phone Validator     https://phonevalidator.com/
+10. OSINT Framework (Phone)  https://osintframework.com/`;
+
+        const OSINT_IMAGE = `-- Image OSINT Tools --
+1.  Google Lens         https://lens.google.com/
+2.  Yandex Images       https://yandex.com/images/
+3.  TinEye              https://tineye.com/
+4.  Bing Visual Search  https://www.bing.com/visualsearch
+5.  ExifTool            https://exiftool.org/
+6.  FotoForensics       https://fotoforensics.com/
+7.  Forensically        https://29a.ch/photo-forensics/
+8.  Image Raider        https://www.imageraider.com/
+9.  Karma Decay         https://karmadecay.com/
+10. GeoSpy              https://geospy.ai/
+11. Metadata2Go         https://www.metadata2go.com/
+12. JPEGsnoop           https://github.com/ImpulseAdventure/JPEGsnoop
+13. ImgOps              https://imgops.com/
+14. Google Earth        https://earth.google.com/
+15. Mapillary           https://www.mapillary.com/
+16. OpenStreetMap       https://www.openstreetmap.org/`;
+
+        const OSINT_DOMAIN = `-- Domain & IP OSINT Tools --
+1.  Shodan              https://www.shodan.io/
+2.  Censys              https://search.censys.io/
+3.  SecurityTrails      https://securitytrails.com/
+4.  Whois Lookup        https://whois.domaintools.com/
+5.  DNSDumpster         https://dnsdumpster.com/
+6.  ViewDNS             https://viewdns.info/
+7.  VirusTotal          https://www.virustotal.com/
+8.  IPinfo              https://ipinfo.io/
+9.  AbuseIPDB           https://www.abuseipdb.com/
+10. MXToolbox           https://mxtoolbox.com/
+11. Robtex              https://www.robtex.com/
+12. IPVoid              https://www.ipvoid.com/
+13. DomainTools         https://www.domaintools.com/
+14. BuiltWith           https://builtwith.com/
+15. Netcraft            https://www.netcraft.com/
+16. BGPView             https://bgpview.io/
+17. GreyNoise           https://www.greynoise.io/
+18. Hurricane Electric BGP Toolkit  https://bgp.he.net/`;
+
+        const OSINT_COLLECTIONS = `-- OSINT Tool Collections (start.me) --
+Photo OSINT           https://start.me/p/0PgzqO/photo-osint
+Intl. Research        https://start.me/p/2pMv6d/international-y-research
+Databases             https://start.me/p/QRENnO/databases
+Keywords              https://start.me/p/VvGz56/keywords
+Persona               https://start.me/p/ZkMLp5/persona
+CSE Utopia            https://start.me/p/EL84Km/cse-utopia
+SA OSINT              https://start.me/p/5vN2a0/sa-osint
+Mappy                 https://start.me/p/8ykwnj/mappy
+Global                https://start.me/p/rxDad8/global
+Video Resource Toolbox https://start.me/p/dl1ME2/video-resource-toolbox
+Sim's Tools           https://start.me/p/KMjgBy/sim-s-tools
+IMINT / GEOINT        https://start.me/p/gyEalK/06-imint-vi-geoint
+Tools                 https://start.me/p/DPBXOz/11-tools
+Automating/Visualisation https://start.me/p/Nx1GnY/08-automating-ualisation
+Podcasts              https://start.me/p/vjAjjb/10-podcasts
+Courses & Education   https://start.me/p/4Kxpxa/12-courses-and-education
+Methodology & Ethics  https://start.me/p/aLpRdj/13-methodology-ethics-mindset
+Dark Web / Breach Data https://start.me/p/X2wwpk/14-dark-web-breach-data
+Addons & Extensions   https://start.me/p/jjLykn/addons-tools-ext-utopia
+Digital Forensics     https://start.me/p/OmxDbb/digital-forensics
+PlantNet (plant ID)   https://identify.plantnet.org`;
+
+        const LOCAL_COMMANDS = {
+            help: () => `Available commands:
+  help              show this list
+  clear             clear the terminal
+  whoami            who is sara
+  neofetch          system banner
+  date              current date/time
+  echo <text>       print text back
+  ai <prompt>       ask Sara AI directly
+  ip <address>      geolocation / ISP lookup for an IP
+  scan <ip> [ports] port scan (needs local scanner.py helper — see below)
+  osint-username    username OSINT tool list
+  osint-phone       phone OSINT tool list
+  osint-image       image OSINT tool list
+  osint-domain      domain & IP OSINT tool list
+  osint-collections curated OSINT link collections
+  Anything else not recognized gets sent straight to Sara AI.`,
+            whoami: () => `sara@root — cybersecurity & software dev AI core. Built by Ahmad Ibrahim.`,
+            neofetch: () => BANNER,
+            date: () => new Date().toString(),
+            'osint-username': () => OSINT_USERNAME,
+            'osint-phone': () => OSINT_PHONE,
+            'osint-image': () => OSINT_IMAGE,
+            'osint-domain': () => OSINT_DOMAIN,
+            'osint-collections': () => OSINT_COLLECTIONS,
+        };
+
+        // --- IP lookup (public API, works over the open internet — no local backend needed) ---
+        async function handleIpLookup(argStr) {
+            const target = argStr.trim();
+            if (!target) {
+                printTerminalLine(`Usage: ip &lt;address&gt;`);
+                return;
+            }
+            const loadingLine = printTerminalLine(`<span style="opacity:0.5;">looking up ${escapeHtml(target)}...</span>`);
+            try {
+                const res = await fetch(`https://ipapi.co/${encodeURIComponent(target)}/json/`);
+                const data = await res.json();
+                loadingLine.remove();
+                if (data.error) {
+                    printTerminalLine(`<span style="color:#ff3b30;">error:</span> ${escapeHtml(data.reason || 'lookup failed')}`);
+                    return;
+                }
+                printTerminalBlock(
+`ip:        ${data.ip}
+city:       ${data.city}, ${data.region}, ${data.country_name}
+org/isp:    ${data.org}
+asn:        ${data.asn}
+timezone:   ${data.timezone}
+lat/lon:    ${data.latitude}, ${data.longitude}`);
+            } catch (err) {
+                loadingLine.remove();
+                printTerminalLine(`<span style="color:#ff3b30;">error:</span> ${escapeHtml(err.message)}`);
+            }
+        }
+
+        // --- Port scan (requires the local scanner.py helper running on localhost:5051) ---
+        const SCANNER_URL = "http://localhost:5051/scan";
+
+        async function handlePortScan(argStr) {
+            const parts = argStr.trim().split(' ').filter(Boolean);
+            if (parts.length === 0) {
+                printTerminalLine(`Usage: scan &lt;ip&gt; [ports, e.g. 1-1000 or 22,80,443]`);
+                return;
+            }
+            const host = parts[0];
+            const ports = parts[1] || "1-1024";
+
+            const loadingLine = printTerminalLine(`<span style="opacity:0.5;">scanning ${escapeHtml(host)} (${escapeHtml(ports)})...</span>`);
+            try {
+                const res = await fetch(`${SCANNER_URL}?host=${encodeURIComponent(host)}&ports=${encodeURIComponent(ports)}`);
+                if (!res.ok) throw new Error(`scanner returned ${res.status}`);
+                const data = await res.json();
+                loadingLine.remove();
+                if (!data.open || data.open.length === 0) {
+                    printTerminalLine(`No open ports found on ${escapeHtml(host)} in range ${escapeHtml(ports)}.`);
+                    return;
+                }
+                printTerminalBlock(`Open ports on ${host}:\n` + data.open.map(p => `  ${p.port}/tcp  ${p.service || ''}`).join('\n'));
+            } catch (err) {
+                loadingLine.remove();
+                printTerminalLine(`<span style="color:#ff3b30;">error:</span> Can't reach local scanner (${err.message}). Run scanner.py first — see setup notes.`);
+            }
+        }
+
+        async function handleCommand(raw) {
+            const commandText = raw.trim();
+            printTerminalLine(`<span style="color: #ff3b30;">sara@root:~#</span> ${escapeHtml(raw)}`);
+
+            if (commandText === '') return;
+
+            const [cmd, ...rest] = commandText.split(' ');
+            const argStr = rest.join(' ');
+            const cmdLower = cmd.toLowerCase();
+
+            if (cmdLower === 'clear') {
+                document.querySelectorAll('.terminal-line').forEach(l => {
+                    if (l !== termInputRow) l.remove();
+                });
+                return;
+            }
+
+            if (cmdLower === 'echo') {
+                printTerminalLine(escapeHtml(argStr));
+                return;
+            }
+
+            if (cmdLower === 'ip') {
+                await handleIpLookup(argStr);
+                return;
+            }
+
+            if (cmdLower === 'scan') {
+                await handlePortScan(argStr);
+                return;
+            }
+
+            if (cmdLower in LOCAL_COMMANDS) {
+                printTerminalBlock(LOCAL_COMMANDS[cmdLower]());
+                return;
+            }
+
+            const query = cmdLower === 'ai' ? argStr : commandText;
+            if (query.trim() === '') {
+                printTerminalLine(`Usage: ai &lt;your question&gt;`);
+                return;
+            }
+
+            termInput.disabled = true;
+            const loadingLine = printTerminalLine(`<span style="opacity:0.5;">processing...</span>`);
+            try {
+                const reply = await callSaraAI(query, { terminalMode: true });
+                loadingLine.remove();
+                printTerminalBlock(reply);
+            } catch (err) {
+                loadingLine.remove();
+                printTerminalLine(`<span style="color:#ff3b30;">error:</span> ${escapeHtml(err.message)}`);
+            } finally {
+                termInput.disabled = false;
+                termInput.focus();
+            }
+        }
+
+        termInput.addEventListener('keydown', async (e) => {
+            if (e.key === 'Enter') {
+                const commandText = termInput.value;
+                termInput.value = '';
+                await handleCommand(commandText);
+            }
+        });
+
+        termBody.addEventListener('click', () => {
+            termInput.focus();
+        });
+    </script>
+</body>
+</html>
