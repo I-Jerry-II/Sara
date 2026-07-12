@@ -1,15 +1,18 @@
 # to install sara you need ollama 
 # install it by writeing these commands
-
-curl -fsSL https://ollama.com/install.sh | sh  # installing ollama 
-
-sudo apt install zstd # debain 
+ 
+# ollama need zstd install it 
+-----------------------------------
+sudo apt install zstd # debain    
 sudo pacman -S zstd #arch 
 
-# ollama need zstd 
+# install ollama 
+
+curl -fsSL https://ollama.com/install.sh | sh  # installing ollama
+
+# install ollama model 
 
 ollama pull llama3.1  #installing the ollama model
-
 
 ollama list  # check if llama3.1 is installed 
 
