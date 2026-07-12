@@ -1,4 +1,4 @@
-# to install sara you need ollama 
+# to start useing sara you need ollama 
 # install it by writeing these commands
  
 # ollama need zstd install it 
